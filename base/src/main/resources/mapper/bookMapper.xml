@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.szj.hello.dao.BookMapper">
+    <resultMap id="bookMap" type="com.szj.hello.dao.domain.Book">
+        <id column="book_id" property="book_id" />
+        <result column="book_name" property="book_name" />
+        <result column="head_picture" property="head_picture" />
+        <result column="author_name" property="author_name" />
+        <result column="author_picture" property="author_picture" />
+        <result column="author_introduction" property="author_introduction" />
+        <result column="content_introduction" property="content_introduction" />
+        <result column="abstract" property="abstract" />
+        <result column="is_try_read" property="is_try_read" />
+        <result column="is_online" property="is_online"/>
+        <result column="ucid" property="ucid" />
+        <result column="is_free" property="is_free" />
+        <result column="ctime" property="ctime" />
+        <result column="mtime" property="mtime" />
+        <result column="is_delete" property="is_delete" />
+    </resultMap>
+
+    <sql id="baseSelect">
+        book_id,
+        book_name,
+        head_picture,
+        author_name,
+        author_picture,
+        author_introduction,
+        content_introduction,
+        abstract,
+        is_try_read,
+        is_online,
+        ucid,
+        is_free,
+        ctime,
+        mtime,
+        is_delete
+    </sql>
+
+    <select id="getBookById" resultMap="bookMap">
+        SELECT
+        <include refid="baseSelect"/>
+        FROM
+        book
+        WHERE
+        book_id = #{bookId} AND
+        is_delete = 0
+    </select>
+
+    <insert id="insertBook" parameterType="com.szj.hello.dao.domain.Book">
+        INSERT INTO book (
+        book_name,
+        head_picture,
+        author_name,
+        author_picture,
+        author_introduction,
+        content_introduction,
+        abstract,
+        is_try_read,
+        is_online,
+        ucid,
+        is_free)
+        VALUES
+            (#{book.book_name},
+            #{book.head_picture},
+            #{book.author_name},
+            #{book.author_picture},
+            #{book.author_introduction},
+            #{book.content_introduction},
+            #{book.abstract},
+            #{book.is_try_read},
+            #{book.is_online},
+            #{book.ucid},
+            #{book.is_free}
+            )
+    </insert>
+
+    <update id="updateBook" parameterType="com.szj.hello.dao.domain.Book">
+        UPDATE book
+        SET
+        <if test="book.book_name != null">
+            book_name = #{book.book_name},
+        </if>
+        <if test="book.head_picture != null">
+            head_picture = #{book.head_picture},
+        </if>
+        <if test="book.author_name != null">
+            author_name = #{book.author_name},
+        </if>
+        <if test="book.author_picture != null">
+            author_picture = #{book.author_picture},
+        </if>
+        <if test="book.author_introduction != null">
+            author_introduction = #{book.author_introduction},
+        </if>
+        <if test="book.content_introduction != null">
+            content_introduction = #{book.content_introduction},
+        </if>
+        <if test="book.abstract != null">
+            abstract = #{book.abstract},
+        </if>
+        <if test="book.ucid != null">
+            ucid = #{book.ucid},
+        </if>
+        book_id = #{book.book_id}
+        WHERE book_id = #{book.book_id}
+        AND is_delete = 0
+    </update>
+</mapper>

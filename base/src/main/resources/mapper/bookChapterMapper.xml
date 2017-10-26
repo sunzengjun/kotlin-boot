@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.szj.hello.dao.BookChapterMapper">
+    <resultMap id="BookChapterMap" type="com.szj.hello.dao.domain.BookChapter">
+        <id column="chapter_id" property="chapter_id" />
+        <result column="parent_chapter_id" property="parent_chapter_id" />
+        <result column="chapter_name" property="chapter_name" />
+        <result column="book_id" property="book_id" />
+        <result column="content_id" property="content_id" />
+        <result column="sort_id" property="sort_id" />
+        <result column="ctime" property="ctime" />
+        <result column="mtime" property="mtime" />
+        <result column="is_delete" property="is_delete" />
+    </resultMap>
+
+    <sql id="baseSelect">
+        chapter_id,
+        parent_chapter_id,
+        chapter_name,
+        book_id,
+        content_id,
+        sort_id,
+        ctime,
+        mtime,
+        is_delete
+    </sql>
+
+    <select id="getBookChapterByBookId" resultMap="BookChapterMap">
+        SELECT
+        <include refid="baseSelect"/>
+        FROM
+        book_chapter
+        WHERE
+        book_id = #{bookId} AND
+        is_delete = 0
+        ORDER BY sort_id,chapter_id
+    </select>
+
+    <select id="getBookChapterByChapterId" resultMap="BookChapterMap">
+        SELECT
+        <include refid="baseSelect"/>
+        FROM
+        book_chapter
+        WHERE
+        chapter_id = #{chapterId} AND
+        is_delete = 0
+    </select>
+
+    <select id="getBookChapterByBookIdAndChapterIds" resultMap="BookChapterMap">
+        SELECT
+        <include refid="baseSelect"/>
+        FROM
+        book_chapter
+        WHERE
+        book_id = #{bookId}
+        AND chapter_id IN
+        <foreach collection="chapterIds" open="(" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+        AND is_delete = 0
+        ORDER BY sort_id,chapter_id
+    </select>
+
+    <insert id="insertBookChapter" parameterType="com.szj.hello.dao.domain.BookChapter">
+        INSERT INTO book_chapter (
+        parent_chapter_id,
+        chapter_name,
+        book_id,
+        content_id,
+        sort_id)
+        VALUES
+        (#{bookChapter.parent_chapter_id},
+        #{bookChapter.chapter_name},
+        #{bookChapter.book_id},
+        #{bookChapter.content_id},
+        #{bookChapter.sort_id}
+        )
+    </insert>
+
+    <update id="updateBookChapter" parameterType="com.szj.hello.dao.domain.BookChapter">
+        UPDATE book_chapter
+        SET
+        <if test="bookChapter.parent_chapter_id != null">
+            parent_chapter_id = #{bookChapter.parent_chapter_id},
+        </if>
+        <if test="bookChapter.chapter_name != null">
+            chapter_name = #{bookChapter.chapter_name},
+        </if>
+        <if test="bookChapter.book_id != null">
+            book_id = #{bookChapter.book_id},
+        </if>
+        <if test="bookChapter.content_id != null">
+            content_id = #{bookChapter.content_id},
+        </if>
+        <if test="bookChapter.sort_id != null">
+            sort_id = #{bookChapter.sort_id},
+        </if>
+        chapter_id = #{bookChapter.chapter_id}
+        WHERE chapter_id = #{bookChapter.chapter_id}
+        AND is_delete = 0
+    </update>
+
+    <update id="updateChapterContent">
+        UPDATE book_chapter
+        SET
+        <if test="contentId != null">
+            content_id = #{contentId},
+        </if>
+        chapter_id = #{chapterId}
+        WHERE chapter_id = #{chapterId}
+        AND is_delete = 0
+    </update>
+
+    <update id="deleteBookChapter">
+        UPDATE book_chapter
+        SET  is_delete = 1
+        WHERE chapter_id = #{chapterId}
+    </update>
+
+</mapper>

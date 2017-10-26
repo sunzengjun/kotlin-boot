@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.szj.hello.dao.BookContentMapper">
+    <resultMap id="BookContentMap" type="com.szj.hello.dao.domain.BookContent">
+        <id column="content_id" property="content_id" />
+        <result column="content" property="content" />
+        <result column="content_type" property="content_type" />
+        <result column="ctime" property="ctime" />
+        <result column="mtime" property="mtime" />
+        <result column="is_delete" property="is_delete" />
+    </resultMap>
+
+    <sql id="baseSelect">
+        content_id,
+        content,
+        content_type,
+        ctime,
+        mtime,
+        is_delete
+    </sql>
+
+    <select id="getBookContentById" resultMap="BookContentMap">
+        SELECT
+        <include refid="baseSelect"/>
+        FROM
+        book_content
+        WHERE
+        content_id = #{contentId} AND
+        is_delete = 0
+    </select>
+
+    <select id="getBookContentByIds" resultMap="BookContentMap">
+        SELECT
+        <include refid="baseSelect"/>
+        FROM
+        book_content
+        WHERE
+        content_id IN
+        <foreach collection="contentIds" open="(" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+        AND is_delete = 0
+    </select>
+
+    <insert id="insertBookContent">
+        INSERT INTO book_content (
+        content,
+        content_type)
+        VALUES
+        (#{content},
+        #{contentType}
+        )
+    </insert>
+
+    <update id="updateBookContent">
+        UPDATE book_content
+        SET
+        <if test="content != null">
+            content = #{content},
+        </if>
+        <if test="contentType != null">
+            content_type = #{contentType},
+        </if>
+        content_id = #{contentId}
+        WHERE content_id = #{contentId}
+        AND is_delete = 0
+    </update>
+
+    <update id="deleteBookContentById">
+        UPDATE book_content
+        SET
+        is_delete = 1
+        WHERE content_id = #{contentId}
+    </update>
+</mapper>
