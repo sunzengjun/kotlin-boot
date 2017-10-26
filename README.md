@@ -1,5 +1,9 @@
 ## 项目说明 ##   
-项目主要由spring boot+kotlin搭建而成，集成了mybatis，可以用java和kotlin这2种语言进行混用开发（独立开发）。
+项目主要由spring boot+kotlin搭建而成，集成了mybatis，可以用java和kotlin这2种语言进行服务器端的业务开发。适合java和kotlin结合的项目或者从java到kotlin的逐步切换。
+本项目是一种新的尝试，搭建过程遇到的2个主要问题：    
+1、kotlin数据类与mybatis的对应问题      
+2、kotlin对象序列化问题        
+本项目给了对应解决方案。   
 
 ## 启动说明 ##   
 1、创建数据库，数据表见others目录下begin.sql    
