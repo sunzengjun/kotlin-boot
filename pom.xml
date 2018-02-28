@@ -65,6 +65,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
         <!-- spring boot组件 begin -->
 
         <!-- db begin-->
@@ -97,6 +101,16 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>18.0</version>
+        </dependency>
+        <dependency>
+            <artifactId>aspectjrt</artifactId>
+            <groupId>org.aspectj</groupId>
+            <version>1.7.4</version>
+        </dependency>
+        <dependency>
+            <artifactId>aspectjweaver</artifactId>
+            <groupId>org.aspectj</groupId>
+            <version>1.7.4</version>
         </dependency>
         <!-- 功能模块 end-->
 
